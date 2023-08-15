@@ -21,18 +21,19 @@ public class Preprocessor {
 					line = annotation(line);
 					line = undesiredSpaces(line);	//trims line to eliminate blanksapces
 					line = noImport(line);			//eliminates everything from import till ;
-					
-					if(isBlockComment(line)) {		//checks if block comment, if it is then skips till end of block is reached
-						do {
+					line = singleLineComments(line);//eliminates single line comments
+					if(isBlockComment(line)) {		//checks if block comment consisting over more than 1 line, if it is then skips till end of block is reached
+						while(!line.contains("*/")&&line!=null) {
 							line = f.readLine();
 							if(line.contains("*/")) {
 								int indexOfInit = line.indexOf("*/");
 								line = line.substring(indexOfInit);
-								if(line.equals(null)){
+								if(line.equals("*/")){
 									line = " ";
+									break;
 								}
 							}
-						}while(!line.contains("*/")&&line!=null);
+						}
 					}
 					
 					
@@ -101,11 +102,21 @@ public class Preprocessor {
 			public static boolean isBlockComment(String line) {
 				 if(line.contains("/*")) {
 					 return true;
-			}
+				 }
 				 else {
 					 return false;
 				 }
-	}
+			}
+			
+	//Method: eliminates single line comments
+			public static String singleLineComments(String line) {
+				if((line.contains("//"))||(line.contains("/*")&&line.contains("*/"))) {
+					return line = " ";
+				}
+				else {
+					return line;
+				}
+			}
 			
 			
 			
