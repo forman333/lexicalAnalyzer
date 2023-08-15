@@ -4,20 +4,21 @@ import java.nio.Buffer;
 public class Preprocessor {
 public static File output;
 	public static void main(String[] args) throws IOException {
-		if (args.length < 1) {
-			System.err.println("Usage: java ClassName <input_file>");
-			System.exit(1);
-			}
-			String input_file = args[0];
-//			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
+//		if (args.length < 1) {
+//			System.err.println("Usage: java ClassName <input_file>");
+//			System.exit(1);
+//			}
+//			String input_file = args[0];
+			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
 			
 			//using buffered reader/writer for file handling
 			try {
 				BufferedReader f = new BufferedReader(new FileReader(input_file));
 				BufferedWriter o = new BufferedWriter(new FileWriter("out1.txt"));
 				String line = f.readLine();
+				String nextLine;
 				//operational loop
-				do {
+				while ((line = f.readLine()) != null) {
 					
 					line = annotation(line);		//skips line with annotation
 					line = undesiredSpaces(line);	//trims line to eliminate blanksapces
@@ -52,8 +53,12 @@ public static File output;
 					}
 					
 					o.write(line);
-				}while ((line = f.readLine()) != null);
+					
+					o.newLine();
+					 
+				}
 				
+				Display("C:/Users/Me/Documents/Java Course/Assignment2/out1.txt");
 				f.close();
 				o.close();
 				
@@ -127,20 +132,15 @@ public static File output;
 				}
 			}
 	//Method: checks if same Line import statement
-			public static String sameLineImport(String line) {
-				if(line.contains("import ")&&line.contains(";")) {
-					 line = line.substring(0,line.indexOf("import "))+line.substring(line.indexOf(";"));		
-					 if(line.equals(";")) {																		//to avoid null error
-						 return line = " ";
-					 }
-					 else {
-						 return line.substring(0,line.indexOf("import "))+line.substring(line.indexOf(";")+1);
-					 }
-				}
-				else {
-					return line;
-				}
-			}
+	/*
+	 * public static String sameLineImport(String line) {
+	 * if(line.contains("import ")&&line.contains(";")) { line =
+	 * line.substring(0,line.indexOf("import "))+line.substring(line.indexOf(";"));
+	 * if(line.equals(";")) { //to avoid null error return line = " "; } else {
+	 * return
+	 * line.substring(0,line.indexOf("import "))+line.substring(line.indexOf(";")+1)
+	 * ; } } else { return line; } }
+	 */
 	//Method: handles import statement on multiple lines
 			public static String importOut(String line, BufferedReader f) throws IOException {
 				if(line.contains("import ")&&line.contains(";")) {
@@ -189,6 +189,17 @@ public static File output;
 					}
 				}
 				return line;
+			}
+			
+		//Method: Display on console by reading from output file
+			public static void Display(String file) throws IOException{
+				BufferedReader read = new BufferedReader(new FileReader(file));
+				String line=read.readLine();
+				while(line!=null) {
+					System.out.println(line);
+					line=read.readLine();
+				}
+				read.close();
 			}
 			
 			
