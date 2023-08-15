@@ -1,131 +1,115 @@
 package Formality;
-
 import java.io.*;
 public class Preprocessor {
 
-	public static void main(String[] args) {
-		if (args.length < 1) {
-			System.err.println("Usage: java ClassName <input_file>");
-			System.exit(1);
-			}
-			String inputFile = args[0];
+	public static void main(String[] args) throws IOException {
+//		if (args.length < 1) {
+//			System.err.println("Usage: java ClassName <input_file>");
+//			System.exit(1);
+//			}
+//			String input_file = args[0];
+			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
 			
-			
-	}
-	
-	//dont use f.read in (loop conditions)
-	public void op(String inputFile) throws IOException {
-		//reads input file
-		try {
-			FileReader f = new FileReader(inputFile);
-			//creates output file
-			FileWriter out = new FileWriter("output.txt");
-			
-			//variable ch stores character while traversing
-			int ch;
-			//checks if ch is in comment block
-			boolean isComment = false;
-			//checks if ch has encountered import
-			boolean isImport = false;
-			
-			
-			do{	ch=f.read();
-				//checks if comment
-				if(ch=='/') {
-					int nextCh = f.read();
-					if(nextCh=='/'){	//condition checks if single line comment
-						while(nextCh!=-1 && nextCh!='\n') {//keeps reading the comment until line is finished
-							nextCh=f.read();
-						}
-					}
-					else if(nextCh=='*') {	//condition to check block comment
-						while(nextCh!=-1) {
-							nextCh = f.read();
-							ch=nextCh;
-							if(nextCh=='*') {
-								nextCh=f.read();
-								ch=nextCh;
-								if(nextCh=='/') {
-									nextCh=f.read();
-									ch=nextCh;
+			//using buffered reader/writer for file handling
+			try {
+				BufferedReader f = new BufferedReader(new FileReader(input_file));
+				BufferedWriter o = new BufferedWriter(new FileWriter("out1.txt"));
+				String line;
+				//operational loop
+				while ((line = f.readLine()) != null) {
+					
+					line = annotation(line);
+					line = undesiredSpaces(line);	//trims line to eliminate blanksapces
+					line = noImport(line);			//eliminates everything from import till ;
+					
+					if(isBlockComment(line)) {		//checks if block comment, if it is then skips till end of block is reached
+						do {
+							line = f.readLine();
+							if(line.contains("*/")) {
+								int indexOfInit = line.indexOf("*/");
+								line = line.substring(indexOfInit);
+								if(line.equals(null)){
+									line = " ";
 								}
 							}
-							while((nextCh!='*'&& (nextCh=f.read())!='/')) {
-								ch=f.read();
-							}
-						}
+						}while(!line.contains("*/")&&line!=null);
 					}
-				}
-				//checks if import statement
-				if(ch=='i') {
-					int nextCh = f.read();
-                    if (nextCh == 'm') {
-                        nextCh = f.read();
-                        ch=nextCh;					//i know its for my piece of mind
-                        if (nextCh == 'p') {
-                            nextCh = f.read();
-                            ch=nextCh;
-                            if (nextCh == 'o') {
-                                nextCh = f.read();
-                                ch=nextCh;
-                                if (nextCh == 'r') {
-                                    nextCh = f.read();
-                                    ch=nextCh;
-                                    if (nextCh == 't') {
-                                        nextCh = f.read();
-                                        ch=nextCh;
-                                        if (nextCh == ' ') {
-                                           // isImport = true;
-                                            while(nextCh!='\n'&&nextCh!=-1) { //condition to end the import line/file 
-                                            	ch=nextCh;	//so that i dont get confused
-                                            	ch=f.read();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-				}
-				//checks if annotation
-				if(ch=='@') {
-					do{
-						ch=f.read(); 
-					}while(ch!='\n'&&ch!=-1);
 					
+					
+					if( blankLines(line)) {			//if theres a blank line, skips the current iteration of line hence skips the blank line
+						continue;
+					}
+					
+					System.out.println(line);
 				}
-				//discards blank line and unnecessary spaces before character in a new line
-				if (ch == '\n') {  
-                    while (ch  != -1 && (ch == ' ' || ch == '\t')) {
-                    	ch=f.read();
-                    }
-                }
-				//remove tabs
-				if(ch=='\t') {
-					while(ch!=-1 && ch!='\n') {
-						ch=f.read();					}
-				}
-				//checks extra spaces
 				
+				f.close();
+				o.close();
 				
-				
-				
-				
-			}while ((ch=f.read())!=-1); //condition checks if file has ended
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-	
-		}
-		
-		//read input file
-		//things to check:
-		//empty line
-		//take out spaces before and after the content
-		//take out comments and blocks
-		//more than one space
-		//store in array list
-		//write it on another output file
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			
 	}
+	}
+	
+	//Method: eliminate blank lines
+			public static boolean blankLines(String line) {
+				if (line.trim().isEmpty()) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+				
+	//Method: eliminate undesired spaces
+			public static String undesiredSpaces(String line) {
+				return line.replaceAll("\\s+", " ").trim();
 
+			}
+	// Method: eliminate import statement
+			public static String noImport(String line) {
+				if (line.contains("import")){
+					
+					int indexOfImport = line.indexOf("import ");
+			        int indexOfSemi = line.indexOf(";", indexOfImport);
+			        
+			        
+			        if (indexOfImport != -1 && indexOfSemi != -1) {
+			            return line.substring(0, indexOfImport) + line.substring(indexOfSemi + 1);
+			        } 
+			        else {
+			        	return line;	
+			        }
+			    }
+				else {
+					return line;
+				}				
+			}
+	// Method eliminate annotations
+			public static String annotation(String line) {
+				 if(line.contains("@")) {
+					 int indexOfAnnot = line.indexOf("@");
+					 return line.substring(0,indexOfAnnot)+line.substring(indexOfAnnot+1); 
+				 }
+				 else {
+					 return line;
+				 }
+			}
+	//Method: eliminate comments
+			public static boolean isBlockComment(String line) {
+				 if(line.contains("/*")) {
+					 return true;
+			}
+				 else {
+					 return false;
+				 }
+	}
+			
+			
+			
 }
+
+	
+
