@@ -2,19 +2,19 @@ package Formality;
 import java.io.*;
 import java.nio.Buffer;
 public class Preprocessor {
-
+public static File output;
 	public static void main(String[] args) throws IOException {
-//		if (args.length < 1) {
-//			System.err.println("Usage: java ClassName <input_file>");
-//			System.exit(1);
-//			}
-//			String input_file = args[0];
-			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
+		if (args.length < 1) {
+			System.err.println("Usage: java ClassName <input_file>");
+			System.exit(1);
+			}
+			String input_file = args[0];
+//			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
 			
 			//using buffered reader/writer for file handling
 			try {
 				BufferedReader f = new BufferedReader(new FileReader(input_file));
-				BufferedWriter output = new BufferedWriter(new FileWriter("out1.txt"));
+				BufferedWriter o = new BufferedWriter(new FileWriter("out1.txt"));
 				String line = f.readLine();
 				//operational loop
 				do {
@@ -51,11 +51,11 @@ public class Preprocessor {
 						continue;
 					}
 					
-					System.out.println(line);
+					o.write(line);
 				}while ((line = f.readLine()) != null);
 				
 				f.close();
-				output.close();
+				o.close();
 				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
