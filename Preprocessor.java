@@ -28,15 +28,14 @@ public class Preprocessor {
 			//checks if ch has encountered import
 			boolean isImport = false;
 			
-			ch=f.read();
-			do{	
+			
+			do{	ch=f.read();
 				//checks if comment
 				if(ch=='/') {
 					int nextCh = f.read();
 					if(nextCh=='/'){	//condition checks if single line comment
 						while(nextCh!=-1 && nextCh!='\n') {//keeps reading the comment until line is finished
-							ch=nextCh;	//to avoid confusion
-							ch=f.read();
+							nextCh=f.read();
 						}
 					}
 					else if(nextCh=='*') {	//condition to check block comment
@@ -90,9 +89,10 @@ public class Preprocessor {
 				}
 				//checks if annotation
 				if(ch=='@') {
-					while(ch!='\n'&&ch!=-1) {
-						ch=f.read();
-					}
+					do{
+						ch=f.read(); 
+					}while(ch!='\n'&&ch!=-1);
+					
 				}
 				//discards blank line and unnecessary spaces before character in a new line
 				if (ch == '\n') {  
