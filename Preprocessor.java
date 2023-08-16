@@ -1,21 +1,22 @@
 package Formality;
 import java.io.*;
+import java.util.Scanner;
 import java.nio.Buffer;
 public class Preprocessor {
 public static File output;
 	public static void main(String[] args) throws IOException {
-		if (args.length < 1) {
-			System.err.println("Usage: java ClassName <input_file>");
-			System.exit(1);
-			}
-			String input_file = args[0];
-//			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
-			String outDisplay = "C:/Users/Me/Documents/Java Course/Assignment2/out1.txt";
+		/*
+		 * if (args.length < 1) {
+		 * System.err.println("Usage: java ClassName <input_file>"); System.exit(1); }
+		 * String input_file = args[0];
+		 */
+			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
+			String outDisplay = "out1.txt";
 			
 			//using buffered reader/writer for file handling
 			try {
 				BufferedReader f = new BufferedReader(new FileReader(input_file));
-				BufferedWriter o = new BufferedWriter(new FileWriter("out1.txt"));
+				BufferedWriter o = new BufferedWriter(new FileWriter(outDisplay));
 				String line = f.readLine();
 				String nextLine;
 				//operational loop
@@ -194,13 +195,21 @@ public static File output;
 			
 		//Method: Display on console by reading from output file
 			public static void Display(String file) throws IOException{
-				BufferedReader read = new BufferedReader(new FileReader(file));
-				String line=read.readLine();
-				while(line!=null) {
-					System.out.println(line);
-					line=read.readLine();
-				}
-				read.close();
+				Scanner s = new Scanner(new File(file));
+				while (s.hasNextLine()) {
+	                String line = s.nextLine();
+	                System.out.println(line); 
+	            } 
+				s.close();
+				
+				
+//				BufferedReader read = new BufferedReader(new FileReader(file));
+//				String line=read.readLine();
+//				while(line!=null) {
+//					System.out.println(line);
+//					line=read.readLine();
+//				}
+//				read.close();
 			}
 			
 			
