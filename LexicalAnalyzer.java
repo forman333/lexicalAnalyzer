@@ -8,8 +8,13 @@ public class LexicalAnalyzer {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String input = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/lexiTest.txt";
-		LexicalAnalyzer object = new LexicalAnalyzer(input);
+		if (args.length < 1) {
+			System.err.println("Usage: java ClassName <input_file>");
+			System.exit(1);
+			}
+		String input_file = args[0];
+		
+		LexicalAnalyzer object = new LexicalAnalyzer(input_file);
 		object.op();
 		
 	}
@@ -42,13 +47,13 @@ public class LexicalAnalyzer {
             }
 
             boolean found = false;
-            for (int i = 0; i < lexemes.length; i++) {
+            for (int i = 0; i < lexemes.length; i++) {						//checks each word if it is present in array
                 for (int j = 0; j < lexemes[i].length; j++) {
                     if (ch.equals(lexemes[i][j])&&!ch.equals("$")) {
                         System.out.println("Lexeme: " + lexemes[i][j]);
-                        found = true;
+                        found = true;										//added this so that there is a way to exit inner and outer loop
                         break;
-                    } else if (ch.contains(lexemes[i][j])&&!ch.equals("$")) {
+                    } else if (ch.contains(lexemes[i][j])&&!ch.equals("$")) {			//checks if the word contains lexemes and prints them separately
                         String sub1 = ch.substring(0, ch.indexOf(lexemes[i][j]));
                         System.out.println("Lexeme: " + sub1);
                         System.out.println("Lexeme: " + lexemes[i][j]);
