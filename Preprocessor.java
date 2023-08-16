@@ -5,12 +5,12 @@ import java.nio.Buffer;
 public class Preprocessor {
 public static File output;
 	public static void main(String[] args) throws IOException {
-		/*
-		 * if (args.length < 1) {
-		 * System.err.println("Usage: java ClassName <input_file>"); System.exit(1); }
-		 * String input_file = args[0];
-		 */
-			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
+
+			  if (args.length < 1) {
+			  System.err.println("Usage: java ClassName <input_file>"); System.exit(1); }
+			  String input_file = args[0];
+	 
+			//String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
 			String outDisplay = "out1.txt";
 			
 			//using buffered reader/writer for file handling
@@ -28,27 +28,7 @@ public static File output;
 					if(isBlockComment(line)) {
 						line = blockComments(line,f);
 					}
-					/*
-					 * if(line.contains("import ")&&(!line.substring(line.indexOf("import ")).
-					 * contains(";"))) { if(line.equals("import"))
-					 * 
-					 * 
-					 * if(line.contains(";")) { int indexOfImport = line.indexOf("import "); int
-					 * indexOfSemi = line.indexOf(";", indexOfImport);
-					 * 
-					 * 
-					 * if (indexOfImport != -1 && indexOfSemi != -1) { line = line.substring(0,
-					 * indexOfImport) + line.substring(indexOfSemi + 1); } } else {
-					 * while(!line.contains(";")&&line!=null) { line = f.readLine(); int
-					 * indexOfImport = line.indexOf("import "); int indexOfSemi = line.indexOf(";",
-					 * indexOfImport);
-					 * 
-					 * 
-					 * if (indexOfImport != -1 && indexOfSemi != -1) { line = line.substring(0,
-					 * indexOfImport) + line.substring(indexOfSemi + 1);
-					 * 
-					 * } } } }
-					 */
+					
 					line = importOut(line,f);	
 					if( blankLines(line)) {			//if theres a blank line, skips the current iteration of line hence skips the blank line
 						continue;
@@ -133,16 +113,7 @@ public static File output;
 					return line;
 				}
 			}
-	//Method: checks if same Line import statement
-	/*
-	 * public static String sameLineImport(String line) {
-	 * if(line.contains("import ")&&line.contains(";")) { line =
-	 * line.substring(0,line.indexOf("import "))+line.substring(line.indexOf(";"));
-	 * if(line.equals(";")) { //to avoid null error return line = " "; } else {
-	 * return
-	 * line.substring(0,line.indexOf("import "))+line.substring(line.indexOf(";")+1)
-	 * ; } } else { return line; } }
-	 */
+	
 	//Method: handles import statement on multiple lines
 			public static String importOut(String line, BufferedReader f) throws IOException {
 				if(line.contains("import ")&&line.contains(";")) {
@@ -193,7 +164,7 @@ public static File output;
 				return line;
 			}
 			
-		//Method: Display on console by reading from output file
+		//Method: Display on console by reading from output file						//Display function not showing output on console but showing it on command line
 			public static void Display(String file) throws IOException{
 				Scanner s = new Scanner(new File(file));
 				while (s.hasNextLine()) {

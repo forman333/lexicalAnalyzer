@@ -1,16 +1,15 @@
 package Formality;
 import java.io.*;
-import java.util.Scanner;
-import java.util.ArrayList;
+
 public class Processor {
 	private String inFile;
     public static void main(String[] args) throws IOException {
-//    	if (args.length < 1) {
-//			System.err.println("Usage: java ClassName <input_file>");
-//			System.exit(1);
-//			}
-//			String input_file = args[0];
-			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/out1.txt";
+    	if (args.length < 1) {
+			System.err.println("Usage: java ClassName <input_file>");
+			System.exit(1);
+			}
+			String input_file = args[0];
+//			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/out1.txt";
 			String out_file = "C:/Users/Me/Documents/Java Course/Assignment2/out2.txt";
 			Processor object = new Processor(input_file);
 			object.process("out2");

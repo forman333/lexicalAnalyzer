@@ -1,5 +1,6 @@
 package Formality;
 import java.io.*;
+import java.util.Scanner;
 public class LexicalAnalyzer {
 	private String inFile;	
 	public LexicalAnalyzer(String inputFile) {
@@ -14,48 +15,76 @@ public class LexicalAnalyzer {
 	}
 	
 	public void op() throws IOException {
-		FileReader r = new FileReader(this.inFile);
-		char[][] lexemes = {
+		//FileReader r = new FileReader(this.inFile);
+		Scanner s = new Scanner(new File(this.inFile));
+		String[][] lexemes = {
+				{ "{", "}", "[", "]", "(", ")", ",", ";", ":", "." },											// Punctuators
 	            { "if", "else", "while", "for", "do", "int", "float", "double", "char", "void", "boolean",		// Keywords
 	              "true", "false", "return", "class", "public", "private", "protected", "static", "final",
 	              "try", "catch", "throw", "interface" },
 	            { "x", "y", "z", "sum", "count", "temp", "myVar", "myFunction" },								// Identifiers
 	            { "+", "-", "*", "/", "%", "=", "+=", "-=", "*=", "/=", "==", "!=", "<", ">", "<=", ">=",		// Operators
 	              "++", "--", "&&", "`" },
-	            { "{", "}", "[", "]", "(", ")", ",", ";", ":", "." },											// Punctuators
+	            											
 	            { "42", "3.14", "\"Hello, world!\"", "'A'", "'9'", "true", "false", "null" },					// Literals
 	            { "//", "/*"," */" },																			// Comments
 	            { "@Override", "@Deprecated", "@SuppressWarnings" },											// Annotations
 	            { "import java.util.List;", "import static java.lang.Math.*;" }									// Imports
 	        };
-		int chint;
-		while((chint =r.read())!=-1) {
-			//		char ch = (char) chint; 
-				String ch = Integer.toString(chint);
-				for(int i = 0;i<lexemes.length;i++) {						//checks if char is present in the the array. There is no real implementation here though.
-					for(int j = 0;j<lexemes[i].length;j++) {				//only to show how to handle it if required\
-						if(ch==(lexemes[i][j])) {
-							System.out.print("Lexeme: "+lexemes[i][j]);
-						}
-						else if(ch=="$") {									//marks end of code/file
-							break;
-						}
-						else if(ch==" ") {
-							continue;
-						}
-						else {
-							System.out.println("Lexeme: "+ch);
-						}
-					}
-				}
-				
-				
-		}
 		
-		r.close();
 		
+		
+		while (s.hasNext()) {
+            String ch = s.next();
 
-	
-	}
+            if (ch.equals("$")) {								//to terminate the program.
+                break;
+            }
 
+            boolean found = false;
+            for (int i = 0; i < lexemes.length; i++) {
+                for (int j = 0; j < lexemes[i].length; j++) {
+                    if (ch.equals(lexemes[i][j])&&!ch.equals("$")) {
+                        System.out.println("Lexeme: " + lexemes[i][j]);
+                        found = true;
+                        break;
+                    } else if (ch.contains(lexemes[i][j])&&!ch.equals("$")) {
+                        String sub1 = ch.substring(0, ch.indexOf(lexemes[i][j]));
+                        System.out.println("Lexeme: " + sub1);
+                        System.out.println("Lexeme: " + lexemes[i][j]);
+                        String sub2 = ch.substring(ch.indexOf(lexemes[i][j]) + lexemes[i][j].length());
+                        if (!sub2.isEmpty()&&!ch.equals("$")) {
+                            System.out.println("Lexeme: " + sub2);
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+
+            if (!found&&!ch.equals("$")) {
+                System.out.println("Lexeme: " + ch);
+            }
+        }
+
+        s.close();
+    }
 }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
