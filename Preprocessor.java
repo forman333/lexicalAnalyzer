@@ -10,6 +10,7 @@ public static File output;
 //			}
 //			String input_file = args[0];
 			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
+			String outDisplay = "C:/Users/Me/Documents/Java Course/Assignment2/out1.txt";
 			
 			//using buffered reader/writer for file handling
 			try {
@@ -58,7 +59,7 @@ public static File output;
 					 
 				}
 				
-				Display("C:/Users/Me/Documents/Java Course/Assignment2/out1.txt");
+				Display(outDisplay);		//Displays file output on console
 				f.close();
 				o.close();
 				
