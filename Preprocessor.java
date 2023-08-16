@@ -4,12 +4,12 @@ import java.nio.Buffer;
 public class Preprocessor {
 public static File output;
 	public static void main(String[] args) throws IOException {
-//		if (args.length < 1) {
-//			System.err.println("Usage: java ClassName <input_file>");
-//			System.exit(1);
-//			}
-//			String input_file = args[0];
-			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
+		if (args.length < 1) {
+			System.err.println("Usage: java ClassName <input_file>");
+			System.exit(1);
+			}
+			String input_file = args[0];
+//			String input_file = "C:/Users/Me/Documents/Java Course/Assignment2/src/Formality/inp1.txt";
 			String outDisplay = "C:/Users/Me/Documents/Java Course/Assignment2/out1.txt";
 			
 			//using buffered reader/writer for file handling
